@@ -1,0 +1,9 @@
+{
+    "name": "FineWoodBranches",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/MenNoWar",
+    "description": "This mod allows to find special wood when picking up branches, depending on the Biome the player visits, with a configurable chance and amount. Each Biome may be turned on/off.",
+    "dependencies": [
+        "ValheimModding-Jotunn-2.9.0"
+    ]
+}
