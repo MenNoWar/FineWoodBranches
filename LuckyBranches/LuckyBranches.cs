@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FineWoodBranch
+namespace LuckyBranchesNS
 {
-    [BepInPlugin(FineWoodBranch.PluginId, "Finewood Branches", "1.0.0")]
+    [BepInPlugin(LuckyBranches.PluginId, "LuckyBranches", "1.0.0")]
     [BepInProcess("valheim.exe")]
-    public class FineWoodBranch : BaseUnityPlugin
+    public class LuckyBranches : BaseUnityPlugin
     {
-        public const string PluginId = "mennowar.mods.FineWoodBranches";
-        public const string SharedName = "FineWoodBranches";
+        public const string PluginId = "mennowar.mods.LuckyBranches";
+        public const string SharedName = "LuckyBranches";
         static Random rnd = new Random();
         public static ConfigEntry<bool> writeDebugOutput;
         private static ManualLogSource log = null;
@@ -35,7 +35,7 @@ namespace FineWoodBranch
             {
                 if (log == null)
                 {
-                    log = BepInEx.Logging.Logger.CreateLogSource(FineWoodBranch.SharedName);
+                    log = BepInEx.Logging.Logger.CreateLogSource(LuckyBranches.SharedName);
                 }
 
                 if (log != null)
@@ -48,8 +48,8 @@ namespace FineWoodBranch
         private void Awake()
         {
             IsEnabled = Config.Bind<bool>("General", "isEnabled", true, "Is this Mod enabled?");
-            Chance = Config.Bind<int>("General", "dropChance", 30, "The Dropchance of Finewood (% Value)");
-            Amount = Config.Bind<int>("General", "dropAmount", 2, "The number of Finewood that you will find");
+            Chance = Config.Bind<int>("General", "dropChance", 30, "The Dropchance of special wood (% Value)");
+            Amount = Config.Bind<int>("General", "dropAmount", 2, "The number of special wood that you will find");
             ShowInfoText = Config.Bind<bool>("General", "showMessage", true, "Display Infotext when special wood has been found?");
             writeDebugOutput = Config.Bind<bool>("Debug", "writeDebug", true, "Write Debug Informations to the console?");
             IsMeadowsEnabled = Config.Bind<bool>("Biomes", "meadowsEnabled", true, "Enable special wood finding in the Meadows?");
