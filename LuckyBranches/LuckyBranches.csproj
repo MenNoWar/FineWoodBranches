@@ -70,7 +70,6 @@
     <Reference Include="Jotunn, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\JotunnLib.2.9.0\lib\net462\Jotunn.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoMod, Version=22.5.1.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MonoMod.22.5.1.1\lib\net452\MonoMod.exe</HintPath>
     </Reference>
@@ -82,10 +81,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
       <HintPath>$(GameDir)\valheim_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
