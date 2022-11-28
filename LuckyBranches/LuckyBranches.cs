@@ -2,6 +2,7 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using Jotunn.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ using System.Threading.Tasks;
 namespace LuckyBranchesNS
 {
     [BepInPlugin(LuckyBranches.PluginId, "LuckyBranches", "1.0.0")]
-    [BepInProcess("valheim.exe")]
     public class LuckyBranches : BaseUnityPlugin
     {
         public const string PluginId = "mennowar.mods.LuckyBranches";
@@ -45,24 +45,79 @@ namespace LuckyBranchesNS
             }
         }
 
-        private void Awake()
+        private static void WriteStatus()
         {
-            IsEnabled = Config.Bind<bool>("General", "isEnabled", true, "Is this Mod enabled?");
-            Chance = Config.Bind<int>("General", "dropChance", 30, "The Dropchance of special wood (% Value)");
-            Amount = Config.Bind<int>("General", "dropAmount", 2, "The number of special wood that you will find");
-            ShowInfoText = Config.Bind<bool>("General", "showMessage", true, "Display Infotext when special wood has been found?");
-            writeDebugOutput = Config.Bind<bool>("Debug", "writeDebug", true, "Write Debug Informations to the console?");
-            IsMeadowsEnabled = Config.Bind<bool>("Biomes", "meadowsEnabled", true, "Enable special wood finding in the Meadows?");
-            IsBlackforestEnabled = Config.Bind<bool>("Biomes", "blackforestEnabled", true, "Enable special wood finding in the Black Forest?");
-            IsSwampEnabled = Config.Bind<bool>("Biomes", "swampEnabled", true, "Enable special wood finding in the Swamp?");
-
-            harmony.PatchAll();
-
             Debug($"{SharedName} is {(IsEnabled.Value ? "Enabled" : "Disabled")} with a change of {Chance.Value} and amount of {Amount.Value}");
             Debug($"I will {(ShowInfoText.Value ? "" : "<b>NOT</b>")} show Notification");
             Debug($"Add wood in Meadows: {IsMeadowsEnabled.Value}");
             Debug($"Add wood in BF: {IsBlackforestEnabled.Value}");
             Debug($"Add wood in Swamp: {IsSwampEnabled.Value}");
+        }
+
+        private void CreateConfigValues()
+        {
+            Config.SaveOnConfigSet = true;
+            SynchronizationManager.Instance.Init();
+
+            IsEnabled = Config.Bind<bool>("General", "isEnabled", true,
+                              new ConfigDescription("Is this mod enabled?", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            Chance = Config.Bind<int>("General", "dropChance", 30,
+                              new ConfigDescription("The Dropchance of special wood (% Value)", new AcceptableValueRange<int>(0, 100),
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            Amount = Config.Bind("General", "dropAmount", 2,
+                new ConfigDescription("The number of special wood that you will find",
+                    new AcceptableValueRange<int>(0, 100),
+                                new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            ShowInfoText = Config.Bind<bool>("General", "showMessage", true,
+                              new ConfigDescription("Display Infotext when special wood has been found?", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            writeDebugOutput = Config.Bind<bool>("Debug", "writeDebug", true,
+                          new ConfigDescription("Write Debug Informations to the console?", null,
+                new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            IsMeadowsEnabled = Config.Bind<bool>("Biomes", "meadowsEnabled", true,
+                              new ConfigDescription("Enable special wood finding in the Meadows?", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            IsBlackforestEnabled = Config.Bind<bool>("Biomes", "blackforestEnabled", true,
+                              new ConfigDescription("Enable special wood finding in the Black Forest?", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            IsSwampEnabled = Config.Bind<bool>("Biomes", "swampEnabled", true,
+                new ConfigDescription("Enable special wood finding in the Swamp??", null,
+                    new ConfigurationManagerAttributes { IsAdminOnly = true }));
+
+            SynchronizationManager.OnConfigurationSynchronized -= SynchronizationManager_OnConfigurationSynchronized;
+            SynchronizationManager.OnConfigurationSynchronized += SynchronizationManager_OnConfigurationSynchronized;
+        }
+
+        private void Awake()
+        {
+            CreateConfigValues();
+
+            harmony.PatchAll();
+            WriteStatus();
+        }
+
+        private void SynchronizationManager_OnConfigurationSynchronized(object sender, Jotunn.Utils.ConfigurationSynchronizationEventArgs e)
+        {
+            if (!(sender is SynchronizationManager syncManager)) return;
+
+            if (e.InitialSynchronization)
+            {
+                Jotunn.Logger.LogMessage("Initial Config sync event received");
+            }
+            else
+            {
+                Jotunn.Logger.LogMessage("Config sync event received");
+            }
+
+            WriteStatus();
         }
 
         public static void ProcessPickup(Inventory inventory)
