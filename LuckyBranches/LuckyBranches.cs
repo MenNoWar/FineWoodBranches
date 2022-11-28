@@ -57,7 +57,6 @@ namespace LuckyBranchesNS
         private void CreateConfigValues()
         {
             Config.SaveOnConfigSet = true;
-            SynchronizationManager.Instance.Init();
 
             IsEnabled = Config.Bind<bool>("General", "isEnabled", true,
                               new ConfigDescription("Is this mod enabled?", null,
@@ -92,7 +91,6 @@ namespace LuckyBranchesNS
                 new ConfigDescription("Enable special wood finding in the Swamp??", null,
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
 
-            SynchronizationManager.OnConfigurationSynchronized -= SynchronizationManager_OnConfigurationSynchronized;
             SynchronizationManager.OnConfigurationSynchronized += SynchronizationManager_OnConfigurationSynchronized;
         }
 
@@ -106,8 +104,6 @@ namespace LuckyBranchesNS
 
         private void SynchronizationManager_OnConfigurationSynchronized(object sender, Jotunn.Utils.ConfigurationSynchronizationEventArgs e)
         {
-            if (!(sender is SynchronizationManager syncManager)) return;
-
             if (e.InitialSynchronization)
             {
                 Jotunn.Logger.LogMessage("Initial Config sync event received");
