@@ -349,3 +349,4 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /publish_template/LuckyBranches.dll
+/publish_template/publish_template.zip

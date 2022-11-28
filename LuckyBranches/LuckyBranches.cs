@@ -7,7 +7,7 @@ using Random = System.Random;
 
 namespace LuckyBranchesNS
 {
-    [BepInPlugin(LuckyBranches.PluginId, "LuckyBranches", "1.0.0")]
+    [BepInPlugin(LuckyBranches.PluginId, "LuckyBranches", "1.0.1")]
     [BepInDependency(Jotunn.Main.ModGuid)]
     public class LuckyBranches : BaseUnityPlugin
     {   public const string PluginId = "mennowar.mods.LuckyBranches";

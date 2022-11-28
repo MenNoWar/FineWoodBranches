@@ -1,6 +1,6 @@
 {
     "name": "LuckyBranches",
-    "version_number": "1.0.0",
+    "version_number": "1.0.1",
     "website_url": "https://github.com/MenNoWar/FineWoodBranches",
     "description": "This mod allows to find special wood when picking up branches, depending on the Biome the player visits, with a configurable chance and amount. Each Biome may be turned on/off.",
     "dependencies": [
