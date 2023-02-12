@@ -33,7 +33,8 @@ swampEnabled | True / False | Enable or Disable finding of the wood in the Swamp
 It should be installed in the server and the client. Changing the Config requires restarting the game to take effect.<br />
 Thanks go out to the lovely &quot;<b>schattentraum</b>&quot; for the idea of this mod.
 
-### Updates
+## Version
+### 1.0.2
++ updated Jotunn Dependency to be 2.10.04
 
-#### 1.0.1
-- the configuration now is correctly synced from server to client
+### 1.0.1 Inital Version

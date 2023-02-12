@@ -42,17 +42,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="LuckyBranches.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Publish_Template\manifest.json" />
+    <None Include="Publish_Template\README.md" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    
     <Reference Include="assembly_valheim">
       <HintPath>$(GameDir)\valheim_Data\Managed\assembly_valheim.dll</HintPath>
       <Private>False</Private>
@@ -65,9 +65,9 @@
       <HintPath>$(GameDir)\BepInEx\core\BepInEx.Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-	  <Reference Include="0Harmony, Version=2.10.1.0, Culture=neutral, processorArchitecture=MSIL">
-		  <HintPath>packages\HarmonyX.2.10.1\lib\net45\0Harmony.dll</HintPath>
-	  </Reference>
+    <Reference Include="0Harmony, Version=2.10.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\HarmonyX.2.10.1\lib\net45\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Jotunn, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\JotunnLib.2.9.0\lib\net462\Jotunn.dll</HintPath>
     </Reference>
@@ -95,16 +95,23 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Publish_Template\icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release (powershell Compress-Archive -Path '$(ProjectDir)Package\*' -DestinationPath '$(SolutionDir)PublishOutput\$(ProjectName).zip' -Force)
-
-if $(ConfigurationName) == Debug del "$(TargetPath).mdb"
-if $(ConfigurationName) == Debug $(SolutionDir)pdb2mdb.exe "$(TargetPath)"
+    <PostBuildEvent>if $(ConfigurationName) == Debug $(SolutionDir)pdb2mdb.exe "$(TargetPath)"
       
-xcopy "$(TargetDir)" "$(GameDir)\Bepinex\plugins\$(ProjectName)\" /q /s /y /i
-xcopy "$(ProjectDir)..\README.md" "$(ProjectDir)Package\" /q /y /i
-copy "$(TargetDir)LuckyBranches.dll" e:\pub</PostBuildEvent>
+if $(ConfigurationName) == Debug copy "$(TargetPath)" "$(GameDir)\Bepinex\plugins\$(TargetFileName)"
+if $(ConfigurationName) == Debug copy "$(TargetPath).mdb" "$(GameDir)\Bepinex\plugins\$(TargetFileName).mdb"
+
+if $(ConfigurationName) == Release copy $(SolutionDir)README.md  $(SolutionDir)Publish_Template
+if $(ConfigurationName) == Release copy $(TargetPath) $(SolutionDir)Publish_Template\
+if $(ConfigurationName) == Release del "$(ProjectDir)Publish_Template\$(ProjectName).zip"
+if $(ConfigurationName) == Release (powershell Compress-Archive -Path '$(ProjectDir)Publish_Template\*' -DestinationPath '$(ProjectDir)Publish_Template\$(ProjectName).zip' -Force)</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
