@@ -34,6 +34,9 @@ It should be installed in the server and the client. Changing the Config require
 Thanks go out to the lovely &quot;<b>schattentraum</b>&quot; for the idea of this mod.
 
 ## Version
+### 1.0.3
++ updated Jotunn Dependency to be 2.23.2
++ removed unneccessary dependencies
 ### 1.0.2
 + updated Jotunn Dependency to be 2.10.04
 
